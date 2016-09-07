@@ -5,19 +5,14 @@ shinyUI(fluidPage(
   sidebarLayout(
     position = "left",
     sidebarPanel(
-      h2("Tareas", style="color:red"),
-      p("Funcion Inversa", style="color:blue")
-      #,actionLink("link","Prueba")
+      h2("Tareas", style="color:gray"),
+      p(actionButton("finv","Funcion Inversa")),
+      p(actionButton("acre","Aceptación Rechazo"))
     ),
     
     mainPanel(
       br(),
-      numericInput("lmd", label = "Lambda: ", value = 1),
-      numericInput("n", label = "Número de simulaciones: ", value = 1000),
-      plotOutput("invgraph"),
-      #uiOutput("test"),
-      p("Prueba de ajuste de bondad"),
-      textOutput("chi")
+      uiOutput("ui")
     )
     
   )
