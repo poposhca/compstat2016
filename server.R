@@ -1,9 +1,13 @@
+library(shiny)
 source("inv.R")
 source("acre.R")
+source("module.R")
 
-shinyServer(function(input, output){
+shinyServer(function(input, output, session){
   
   v <- reactiveValues(page = "none")
+  
+  modulo <- callModule(modserv,"mod")
   
   Finv <- function(u, lambda){
     return (-log(1-u)/lambda)

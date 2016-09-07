@@ -1,3 +1,6 @@
+library(shiny)
+source("module.R")
+
 shinyUI(fluidPage(
   
   titlePanel("Estadistica Computacional"),
@@ -12,7 +15,9 @@ shinyUI(fluidPage(
     
     mainPanel(
       br(),
-      uiOutput("ui")
+      #uiOutput("ui")
+      #Prueba de modulos
+      modui("mod")
     )
     
   )
