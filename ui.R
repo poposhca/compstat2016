@@ -1,5 +1,6 @@
 library(shiny)
-source("module.R")
+source("finvmodule.R")
+source("acremodule.R")
 
 shinyUI(fluidPage(
   
@@ -9,15 +10,13 @@ shinyUI(fluidPage(
     position = "left",
     sidebarPanel(
       h2("Tareas", style="color:gray"),
-      p(actionButton("finv","Funcion Inversa")),
-      p(actionButton("acre","Aceptación Rechazo"))
+      p(actionLink("finv","Funcion Inversa")),
+      p(actionLink("acre","Aceptación Rechazo"))
     ),
     
     mainPanel(
       br(),
-      #uiOutput("ui")
-      #Prueba de modulos
-      modui("mod")
+      uiOutput("ui")
     )
     
   )

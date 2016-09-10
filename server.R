@@ -1,54 +1,11 @@
 library(shiny)
-source("inv.R")
-source("acre.R")
-source("module.R")
 
 shinyServer(function(input, output, session){
   
   v <- reactiveValues(page = "none")
   
-  modulo <- callModule(modserv,"mod")
-  
-  Finv <- function(u, lambda){
-    return (-log(1-u)/lambda)
-  }
-  
-  GetV <- function(n){
-    return (runif(n))
-  }
-  
-  bondad <- function(u){
-    chisq.test(u)
-  }
-  
-  output$invgraph <- renderPlot({
-    v <- GetV(input$n)
-    f <- Finv(v,input$lmd)
-    hist(f)
-  })
-  
-  output$chi <- renderText({
-    v <- GetV(input$n)
-    f <- Finv(v,input$lmd)
-    bondad(f)$p.value
-  })
-  
-  #Aceptación Rechazo
-  
-  output$plt <- renderPlot({
-    x <- seq(0, 1, length.out=100)
-    y1 = input$m*sapply(x,gx())
-    y2 = sapply(x, fx())
-    plot_limit = c(min(c(y1, y2)), max(c(y1, y2)))
-    plot(x,y1, ylim = plot_limit)
-    lines(x,y2)
-  })
-  
-  fx <- reactive({
-    f <- paste("aux <- function(x) ", input$fx)
-    eval(parse(text = f))
-    aux
-  })
+  m1 <- callModule(fiserv, "m1")
+  m2 <- callModule(acreserver,"m2")
   
   #Eventos que escuchan a los links
   observeEvent(input$finv,{
@@ -58,12 +15,11 @@ shinyServer(function(input, output, session){
     v$page = "acre"
   })
   
-  #funcion que imprime en output test
   output$ui <- renderUI(
     switch (v$page,
       "none" = list(p("Selecciona una opción de la barra lateral")),
-      "inv" = invui(),
-      "acre" = acreui()
+      "inv" = finvdui("m1"),
+      "acre" = acreui("m2")
     )
   )
   
