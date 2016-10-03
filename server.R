@@ -29,7 +29,7 @@ shinyServer(function(input, output, session){
   
   output$ui <- renderUI(
     switch (v$page,
-      "none" = list(p("Selecciona una opci??n de la barra lateral")),
+      "none" = list(p("Selecciona una opcion de la barra lateral")),
       "inv" = finvdui("m1"),
       "acre" = acreui("m2"),
       "big" = bignumui("m3"),

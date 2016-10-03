@@ -15,7 +15,7 @@ shinyUI(fluidPage(
       h2("Tareas", style="color:gray"),
       p(actionLink("finv","1) Funcion Inversa")),
       p(actionLink("integral","2) Integral definida")),
-      p(actionLink("mc", "3) Morkov Chain")),
+      p(actionLink("mc", "3) Markov Chain")),
       br(),
       h2("Ejercicos de clase", style="color:gray"),
       p(actionLink("acre","Aceptacion Rechazo")),

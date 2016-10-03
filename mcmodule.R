@@ -8,6 +8,11 @@ mcui <- function(id)
     h1('Markov Chain Monte Carlo'),
     fileInput(ns('file1'), label = 'Seleccionar archivo csv', accept = c('text/csv','text/comma-separated-values')),
     tableOutput(ns('data')),
+    fluidRow(
+      column(6,numericInput(ns('init'), label = 'Estado incial de simulacion:', value = 1)),
+      column(6,numericInput(ns('nsim'), label = 'Simulaciones:', value = 5))
+    ),
+    h3('Simulaciones:'),
     textOutput(ns('txt'))
   )
 }
@@ -19,7 +24,7 @@ mcserver <- function(input, output, session)
     if(is.null(f))
       NULL
     else
-      read.csv(f$datapath)
+      as.matrix(read.csv(f$datapath))
   })
   
   output$data <- renderTable({
@@ -27,6 +32,8 @@ mcserver <- function(input, output, session)
   })
   
   output$txt <- renderText({
-    square(6)
+    if(is.null(data()))
+      return()
+    mc_trayectoria(input$init,input$nsim,data())
   })
 }
