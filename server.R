@@ -6,6 +6,9 @@ shinyServer(function(input, output, session){
   
   m1 <- callModule(fiserv, "m1")
   m2 <- callModule(acreserver,"m2")
+  m3 <- callModule(bignumumserv,"m3")
+  m4 <- callModule(intserver, "m4")
+  m5 <- callModule(mcserver, "m5")
   
   #Eventos que escuchan a los links
   observeEvent(input$finv,{
@@ -14,12 +17,24 @@ shinyServer(function(input, output, session){
   observeEvent(input$acre,{
     v$page = "acre"
   })
+  observeEvent(input$big,{
+    v$page = "big"
+  })
+  observeEvent(input$integral,{
+    v$page = "integral"
+  })
+  observeEvent(input$mc,{
+    v$page = "mc"
+  })
   
   output$ui <- renderUI(
     switch (v$page,
-      "none" = list(p("Selecciona una opción de la barra lateral")),
+      "none" = list(p("Selecciona una opci??n de la barra lateral")),
       "inv" = finvdui("m1"),
-      "acre" = acreui("m2")
+      "acre" = acreui("m2"),
+      "big" = bignumui("m3"),
+      "integral" = intui("m4"),
+      "mc" = mcui("m5")
     )
   )
   
