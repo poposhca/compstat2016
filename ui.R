@@ -19,7 +19,7 @@ shinyUI(fluidPage(
       br(),
       h2("Ejercicos de clase", style="color:gray"),
       p(actionLink("acre","Aceptacion Rechazo")),
-      p(span("Clase", style="color:blue"),actionLink("big","Ley de los grandes numeros"))
+      p(actionLink("big","Ley de los grandes numeros"))
     ),
     
     mainPanel(
