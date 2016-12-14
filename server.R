@@ -9,6 +9,7 @@ shinyServer(function(input, output, session){
   m3 <- callModule(bignumumserv,"m3")
   m4 <- callModule(intserver, "m4")
   m5 <- callModule(mcserver, "m5")
+  m6 <- callModule(mhserver, "m6")
   
   #Eventos que escuchan a los links
   observeEvent(input$finv,{
@@ -26,6 +27,9 @@ shinyServer(function(input, output, session){
   observeEvent(input$mc,{
     v$page = "mc"
   })
+  observeEvent(input$mh,{
+    v$page = "mh"
+  })
   
   output$ui <- renderUI(
     switch (v$page,
@@ -34,8 +38,9 @@ shinyServer(function(input, output, session){
       "acre" = acreui("m2"),
       "big" = bignumui("m3"),
       "integral" = intui("m4"),
-      "mc" = mcui("m5")
+      "mc" = mcui("m5"),
+      "mh" = mhui("m6")
     )
   )
-  
+
 })

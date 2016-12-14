@@ -4,9 +4,10 @@ finvdui <- function(id)
 {
   ns <- NS(id)
   tagList(
-    h1("Metodo de la función Inversa"),
+    h1("Metodo de la funcion Inversa"),
     numericInput(ns("lmd"), label = "Lambda: ", value = 1),
-    numericInput(ns("n"), label = "Número de simulaciones: ", value = 1000),
+    numericInput(ns("n"), label = "Numero de simulaciones: ", value = 1000),
+    numericInput(ns("nbin"), label = "Numero de cajones: ", value = 20, step = 5),
     plotOutput(ns("invgraph")),
     p("Prueba de ajuste de bondad"),
     textOutput(ns("chi"))
@@ -26,7 +27,7 @@ fiserv <- function(input, output, session)
   output$invgraph <- renderPlot({
     v <- GetV(input$n)
     f <- Finv(v,input$lmd)
-    hist(f)
+    hist(f, breaks = input$nbin)
   })
   
   bondad <- function(u){

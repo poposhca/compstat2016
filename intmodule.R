@@ -1,3 +1,7 @@
+library(ggplot2)
+library(plyr)
+require(ggplot2)
+
 intui <- function(id)
 {
   ns <- NS(id)
@@ -26,7 +30,10 @@ intui <- function(id)
     fluidRow(
       column(4, span('Limite superior:')),
       column(3, textOutput(ns('U')))
-    )
+    ),
+    h3('Multiple MonteCarlo'),
+    #numericInput(ns('multi'), label = 'Numero de simulaciones', value = 100),
+    plotOutput(ns('test'))
   )
 }
 
@@ -45,7 +52,23 @@ intserver <- function(input, output, session)
     z <- qnorm(alpha/2, lower.tail = FALSE)      #z alpha/2 derecho
     l <- e - sqrt(s/n) * z
     u <- e + sqrt(s/n) * z
-    return(list('e' = e,'s' = s, 'U' = u, 'L' = l))
+    return(data.frame('e' = e,'s' = s, 'U' = u, 'L' = l))
+  }
+  
+  #Otra forma de correr mceval
+  mc.intervals <- function(Phi, N, X.dens=runif, alpha=0.05){
+    results.list <- lapply(N, function(nsim){
+      X <- sapply(FUN=X.dens, nsim)
+      PhiX <- sapply(X, Phi)
+      estim <- mean(PhiX)
+      quant <- qnorm(alpha/2, lower.tail=FALSE)
+      S2 <- var(PhiX) # Estimate of the variance of phi(X_i)
+      int.upper <- estim + sqrt(S2/nsim)*quant 
+      int.lower <- estim - sqrt(S2/nsim)*quant 
+      return(data.frame(N=nsim, Estimate=estim, LI=int.lower, UI=int.upper))
+    })
+    results.table <- ldply(results.list)
+    return(results.table)
   }
   
   trapeval <- function(limits, f, eps)
@@ -79,7 +102,16 @@ intserver <- function(input, output, session)
   output$plot <- renderPlot({
     x <- seq(input$min, input$max, length.out = 100)
     y <- sapply(x, fx())
-    plot(x,y, type = "l")
+    plot(x,y, type = "l", main = paste('f(x)'))
+  })
+  
+  output$test <- renderPlot ({
+    N <- seq(from=1000, to=10000, by=1000)
+    X.dens <- function(nsim) runif(nsim, 0, 2)
+    data <- mc.intervals(Phi=fx(), N=N, X.dens=X.dens)
+    ggplot(data, aes(x=N)) +
+      geom_ribbon(aes(ymin=LI, ymax=UI), fill="grey", alpha=.4) + 
+      geom_line(aes(y=Estimate), colour="blue")
   })
   
   output$res <- renderText({
@@ -95,7 +127,7 @@ intserver <- function(input, output, session)
   })
   
   output$U <- renderText({
-    l <- integral()$L
+    l <- integral()$U
     if(is.null(l))
       'Null'
     else

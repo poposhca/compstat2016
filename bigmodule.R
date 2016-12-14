@@ -14,7 +14,7 @@ bignumui <- function(id)
 bignumumserv <- function(input, output, session)
 {
   sim <- reactive({
-    n <- 5000
+    n <- 10
     s <- 100
     means <- replicate(s, {
       tiros <- sample.int(2, size = n,replace = TRUE) - 1
