@@ -6,7 +6,7 @@ mhui <- function(id)
 {
   ns <- NS(id)
   tagList(
-    h1('Metropolis Hasting MCMC powered by DON FER'),
+    h1('Metropolis Hasting MCMC'),
     fileInput(ns('file1'), label = 'Seleccionar archivo csv', accept = c('text/csv','text/comma-separated-values')),
     tabsetPanel(
       tabPanel("Datos", tagList(
